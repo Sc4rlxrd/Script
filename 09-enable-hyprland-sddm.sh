@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==========================================
-# 🌀 Habilita login automático no Hyprland via SDDM
-# Feito para Manjaro KDE Minimal / Arch
+# 🌀 Corrigido — habilita login automático no Hyprland via SDDM
+# Suporte total para Manjaro KDE Minimal / Arch
 # ==========================================
 
 USER_NAME=$(whoami)
@@ -17,6 +17,9 @@ if ! command -v Hyprland &>/dev/null; then
 fi
 echo "✅ Hyprland detectado."
 
+# ------------------------------------------
+# Corrige o .desktop para incluir o env wrapper
+# ------------------------------------------
 echo "==> Verificando sessão Wayland..."
 if [[ ! -f "$DESKTOP_FILE" ]]; then
     echo "⚙️  Criando arquivo $DESKTOP_FILE ..."
@@ -24,16 +27,41 @@ if [[ ! -f "$DESKTOP_FILE" ]]; then
 [Desktop Entry]
 Name=Hyprland
 Comment=Dynamic tiling Wayland compositor
-Exec=Hyprland
+Exec=env XDG_CURRENT_DESKTOP=Hyprland dbus-run-session Hyprland
 Type=Application
 DesktopNames=Hyprland
 EOF
     echo "✅ Sessão Hyprland registrada no SDDM."
 else
-    echo "✅ Sessão Hyprland já existe."
+    echo "✅ Sessão Hyprland já existe. (verificando conteúdo)"
+    if ! grep -q "dbus-run-session" "$DESKTOP_FILE"; then
+        echo "⚙️  Atualizando Exec para usar dbus-run-session..."
+        sudo sed -i 's|^Exec=.*|Exec=env XDG_CURRENT_DESKTOP=Hyprland dbus-run-session Hyprland|' "$DESKTOP_FILE"
+    fi
 fi
 
-echo "==> Verificando diretório de configuração do SDDM..."
+# ------------------------------------------
+# Verifica dependências críticas
+# ------------------------------------------
+echo "==> Verificando dependências essenciais..."
+missing_pkgs=()
+
+for pkg in dbus polkit xdg-desktop-portal-hyprland xdg-desktop-portal; do
+    if ! pacman -Q "$pkg" &>/dev/null; then
+        missing_pkgs+=("$pkg")
+    fi
+done
+
+if (( ${#missing_pkgs[@]} > 0 )); then
+    echo "⚠️  Instalando dependências ausentes: ${missing_pkgs[*]}"
+    sudo pacman -Sy --noconfirm "${missing_pkgs[@]}"
+else
+    echo "✅ Todas as dependências estão presentes."
+fi
+
+# ------------------------------------------
+# Configura o SDDM
+# ------------------------------------------
 sudo mkdir -p "$CONFIG_DIR"
 
 echo "==> Deseja ativar login automático no Hyprland? (s/n)"
@@ -59,6 +87,9 @@ EOF
     echo "✅ Sessão Hyprland adicionada. Escolha manualmente na tela de login."
 fi
 
+# ------------------------------------------
+# Finaliza
+# ------------------------------------------
 echo "==> Reiniciando o SDDM..."
 sudo systemctl restart sddm
 
