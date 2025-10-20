@@ -1,0 +1,50 @@
+{
+  // Formatação Automática ao Salvar
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // Define Prettier como padrão para arquivos não-Java
+
+  // Configurações Visuais
+  "editor.minimap.enabled": true, // Mapa de código na lateral
+  "editor.fontFamily": "Fira Code, 'Droid Sans Mono', monospace", // Recomendação: Use uma fonte com 'ligatures' (como a Fira Code) para melhor leitura de operadores (ex: '===' vira '≡')
+  "editor.tabSize": 4, // Padrão Java/Spring
+  "workbench.iconTheme": "material-icon-theme", // Tema de ícones
+
+  // Configurações Específicas para Java (Garanta que a formatação do Prettier não conflite com a do Java)
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java", // Usa o formatador Java padrão
+    "editor.tabSize": 4
+  },
+
+  // Terminal (Opção para usar Zsh no terminal integrado)
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.profiles.linux": {
+    "zsh": {
+      "path": "/bin/zsh"
+    }
+  },
+  "terminal.integrated.fontFamily": "Hack Nerd Font Mono",
+  "terminal.integrated.fontSize": 14,
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "files.autoSave": "afterDelay",
+  "workbench.colorTheme": "Bearded Theme Monokai Metallian",
+  "RainbowBrackets.depreciation-notice": false,
+  "azureTerraform.survey": {
+    "surveyPromptDate": "2025-10-29T18:28:35.366Z",
+    "surveyPromptIgnoredCount": 0
+  }
+  {
+    "telemetry.telemetryLevel": "off",
+    "update.mode": "none",
+    "extensions.autoUpdate": false,
+    "workbench.startupEditor": "none",
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "none",
+    "editor.smoothScrolling": false,
+    "explorer.compactFolders": false,
+    "terminal.integrated.gpuAcceleration": "off",
+    "git.autofetch": false,
+    "window.titleBarStyle": "custom",
+    "workbench.tree.indent": 10
+}
+
+}
