@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
-
 set -e
 
 INSTALL_DIR="/opt/idea-IC"
 DESKTOP_FILE="/usr/share/applications/intellij-idea.desktop"
 TMP_DIR="/tmp/intellij-install"
-URL="https://www.jetbrains.com/idea/download/download-thanks.html?platform=linux&code=IIC"
+URL="https://download.jetbrains.com/idea/ideaIC-latest.tar.gz"
 
-echo "👉 [4/8] Verificando IntelliJ IDEA Community Edition..."
+echo "👉 [4/8] Instalando IntelliJ IDEA Community Edition..."
 
-# Se já estiver instalado
 if [[ -d "$INSTALL_DIR" ]]; then
-    echo "⚙️  IntelliJ já instalado em: $INSTALL_DIR"
+    echo "⚙️ IntelliJ já instalado em: $INSTALL_DIR"
     echo "Deseja atualizar para a versão mais recente? (s/n)"
     read -r UPDATE
     if [[ "$UPDATE" =~ ^[sS]$ ]]; then
-        echo "🔄 Atualizando IntelliJ IDEA Community..."
         sudo rm -rf "$INSTALL_DIR"
     else
         echo "✅ Mantendo a instalação atual."
@@ -29,17 +26,21 @@ mkdir -p "$TMP_DIR"
 cd "$TMP_DIR"
 
 echo "🌐 Baixando IntelliJ IDEA Community Edition..."
-wget -q --show-progress "$URL" -O ideaIC.tar.gz
+curl -L "$URL" -o ideaIC.tar.gz
+
+if ! file ideaIC.tar.gz | grep -q gzip; then
+    echo "❌ Erro: o arquivo baixado não é um tar.gz válido."
+    echo "👉 Verifique se o link da JetBrains ainda é válido."
+    exit 1
+fi
 
 echo "📂 Extraindo para /opt..."
 sudo tar -xzf ideaIC.tar.gz -C /opt/
 
-# Detecta o nome da pasta extraída (muda em cada versão)
 EXTRACTED_DIR=$(find /opt -maxdepth 1 -type d -name "idea-IC*" | head -n 1)
-
 if [[ -z "$EXTRACTED_DIR" ]]; then
-  echo "❌ Erro: não foi possível encontrar o diretório extraído."
-  exit 1
+    echo "❌ Erro: não foi possível localizar o diretório extraído."
+    exit 1
 fi
 
 sudo mv "$EXTRACTED_DIR" "$INSTALL_DIR"
@@ -58,13 +59,7 @@ Categories=Development;IDE;
 StartupWMClass=jetbrains-idea
 EOF
 
-echo "🔄 Atualizando cache de aplicativos..."
 sudo update-desktop-database > /dev/null 2>&1 || true
-
 rm -rf "$TMP_DIR"
 
-echo "✅ IntelliJ IDEA Community Edition instalado com sucesso!"
-echo "💡 Para abrir manualmente, execute:"
-echo "   /opt/idea-IC/bin/idea.sh &"
-
-echo "✅ [4/8] IntelliJ IDEA instalado!"
+echo "✅ IntelliJ IDEA instalado com sucesso!"
