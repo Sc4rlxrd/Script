@@ -25,7 +25,7 @@ sudo pacman -S --noconfirm --needed \
 mkdir -p ~/Imagens/wallpapers
 
 # 4. Baixar wallpaper Dark Elegante
-WALLPAPER_URL="https://w.wallhaven.cc/full/og/wallhaven-og5jp7.jpg"
+WALLPAPER_URL="https://wallhaven.cc/full/og/wallhaven-og5jp7.jpg"
 echo "🖼️ Baixando wallpaper Dark Elegante..."
 wget -q "$WALLPAPER_URL" -O ~/Imagens/wallpapers/og5jp7.jpg
 
