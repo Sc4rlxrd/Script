@@ -11,7 +11,7 @@ echo "🧹 Limpando ambiente Hyprland e derivados..."
 pkill -9 hyprland waybar hyprpaper mako wofi nm-applet blueman-applet 2>/dev/null
 
 # 2. Remover pacotes principais instalados via pacman
-sudo pacman -Rns --noconfirm --needed \
+sudo pacman -Rns --noconfirm  \
   hyprland \
   waybar \
   mako \
