@@ -5,7 +5,7 @@ set -e
 INSTALL_DIR="/opt/idea-IC"
 DESKTOP_FILE="/usr/share/applications/intellij-idea.desktop"
 TMP_DIR="/tmp/intellij-install"
-URL="https://download.jetbrains.com/idea/ideaIC-latest.tar.gz"
+URL="https://www.jetbrains.com/idea/download/download-thanks.html?platform=linux&code=IIC"
 
 echo "👉 [4/8] Verificando IntelliJ IDEA Community Edition..."
 
