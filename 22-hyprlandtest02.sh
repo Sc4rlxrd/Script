@@ -2,7 +2,7 @@
 set -e
 
 # Instala o Hyprland, componentes Wayland essenciais e o terminal Kitty
-sudo pacman -S --needed --noconfirm \
+sudo pacman -S --needed --noconfirm --force \
   hyprland \
   waybar \
   wofi \
@@ -15,6 +15,10 @@ sudo pacman -S --needed --noconfirm \
   qt5-wayland \
   qt6-wayland \
   kitty \
+  networkmanager \
+  network-manager-applet \
+  bluez \
+  bluez-utils \
   blueman \
   blueman-applet
 echo "✅ Pacotes principais do Hyprland e o terminal Kitty instalados com sucesso!"
